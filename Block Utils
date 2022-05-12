@@ -1,0 +1,47 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package com.mycompany.chain;
+
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ *
+ * @author hutha
+ */
+public class Block {
+ private final List<BlockCh> blockChain  =new ArrayList<>();
+ public List<BlockCh> getBlockChain (){
+     return blockChain;
+ }
+ private  BlockCh getlatesstBlock(){
+     if (blockChain.isEmpty()){
+      createGenesisBlock();   
+     }
+     return blockChain.get(blockChain.size()-1);
+ }
+ private void createGenesisBlock(){
+     blockChain.add(new BlockCh(0, "0", "Hello"));
+ }
+public void addBlockCh(String data){
+     BlockCh previousBlock=getlatesstBlock();
+     BlockCh newBlockCh = new BlockCh(previousBlock.getIndex()+1,data,previousBlock.getHash());
+     blockChain.add(newBlockCh);
+}
+public boolean isChainVaild(){
+    for (int i=1;i<blockChain.size();i++){
+        BlockCh currentBlock =blockChain.get(i);
+        BlockCh previousBlock=blockChain.get(i-1);
+        if(!currentBlock.getHash().equals(currentBlock.calculateHash())){
+            return false;
+        }
+        if(!currentBlock.getPreviousHash().equals(previousBlock.getHash())){
+            return false;
+        }
+    }
+        return true;
+}
+}
